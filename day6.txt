@@ -61,3 +61,28 @@ Q8 :
 select round(sum(long_w),4) as sum
 from station
 where long_w > 38.7880 and long_w < 137.2345;
+
+AQ1 : 
+select employeeNumber, firstName, lastName,
+ifnull(email, 'N/A') as email, #ifnull is better to use here but next line has example of if as well.
+if (trim(phone) is null , 'N/A', phone) as phone
+from employees
+order by employeeNumber;
+
+AQ2 :
+select employee_id, first_name, last_name, job_id 
+from employees
+where department_id in 
+(
+    select distinct department_id from departments where location_id in 
+        (
+        select distinct location_id from locations where lower(city) = 'seattle'
+        )
+) order by employee_id ;
+
+AQ3 :
+select count( distinct customer_id) as rich_count
+from store
+where amount > 500;
+
+
