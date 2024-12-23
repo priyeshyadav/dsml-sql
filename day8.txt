@@ -1,0 +1,58 @@
+Q1 : 
+select round(max(lat_n),4) as max from
+station 
+where lat_n < 138.2523;
+
+Q2: 
+select (salary * months) as earnings, count(*) AS num_employees
+from employee
+group by 1
+order by 1 desc
+limit 1;
+
+Q3 : Option A
+SELECT cate_id, SUM(receive_qty*purch_price)   
+FROM purchase              
+GROUP BY cate_id; 
+
+Q4 : 
+select max(num) as num
+from (
+select num
+from mynumbers 
+group by 1
+having count(*) = 1) as num
+
+Q5 : 
+select actor_id, director_id
+from actordirector
+group by 1, 2
+having count(*) >= 3
+order by 1;
+
+Q6 : 
+select * from employees where salary = (
+select max(salary) from employees where salary <
+(select max(salary) from employees where salary <
+(select max(salary) from employees)));
+
+Q7 : 
+select concat(first_name,' ',last_name) as full_name
+from employees where employee_id in (
+select 
+manager_id
+from employees
+group by 1
+having count(employee_id) >=4 )
+order by full_name;
+
+Q8 :
+select * from departments
+where department_id in 
+(
+select department_id
+from employees
+group by 1
+having min(salary) >= 9000
+)
+order by department_id ;
