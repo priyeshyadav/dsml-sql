@@ -111,5 +111,12 @@ a.timestamp between p.start_time and p.end_time
 where a.customer_id is null
 order by session_id;
 
+SELECT distinct session_id
+FROM Playback p
+LEFT JOIN Ads a 
+ON a.customer_id = p.customer_id
+WHERE a.timestamp NOT BETWEEN p.start_time AND p.end_time OR a.customer_id IS NULL
+ORDER BY session_id;
+
 AQ3 : 
 Returns all employees, even if they don't belong to any department
