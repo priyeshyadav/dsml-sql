@@ -108,3 +108,14 @@ group by 1,2
 having sum(o.product_name='Bread')> 0 and sum(o.product_name = 'Milk') > 0 and sum(o.product_name="Eggs")=0
 order by 2;
 
+select C.customer_id, C.customer_name
+from customers C 
+join orders O on C.customer_id = O.customer_id
+group by C.customer_id, C.customer_name
+having
+sum(CASE WHEN O.product_name = 'BREAD' THEN 1 ELSE 0 end) > 0
+and 
+sum(CASE WHEN O.product_name = 'MILK' THEN 1 ELSE 0 end) > 0 
+and 
+sum(CASE WHEN O.product_name = 'Eggs' THEN 1 ELSE 0 end) = 0
+order by C.customer_name asc;
