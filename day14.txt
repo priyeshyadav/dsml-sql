@@ -88,6 +88,16 @@ join job_history H on E.employee_id = H.employee_id
 where job_rank=1
 order by 1 ;
 
+select E.first_name, J.recent_job
+from employees E
+join (
+select 
+distinct employee_id,
+first_value(start_date) over(partition by employee_id order by start_date desc) as recent_job
+from job_history) as J
+on E.employee_id = J.employee_id
+order by 1;
+
 select distinct first_name, first_value(start_date)
 over(partition by jhist.employee_id
 order by start_date desc
