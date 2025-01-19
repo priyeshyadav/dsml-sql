@@ -12,7 +12,7 @@ from employees
 where DATEDIFF('2022-06-08', hire_date)/365 >= 28
 order by employee_id;
 
-A2 : 
+Q2 : 
 select employee_id, first_name, last_name, salary, hire_date,
 extract(DAY from hire_date) as Day,
 extract(MONTH from hire_date) as Month,
@@ -25,10 +25,10 @@ and extract(YEAR from hire_date) = 2000
 and salary > 5000
 order by 1;
 
-A3 : 
+Q3 : 
 SELECT Date('2019-08-06 08:10:12')
 
-A4 : 
+Q4 : 
 select E.employee_id, E.first_name, E.last_name, E.salary, D.department_name, E.hire_date, L.city
 from employees E 
 join departments D on E.department_id = D.department_id
@@ -36,7 +36,7 @@ join locations L on D.location_id = L.location_id
 where E.hire_date between str_to_date('1998-01-01','%Y-%m-%d') and date_add(str_to_date('1998-01-01','%Y-%m-%d'), INTERVAL 90 DAY)
 order by 1;
 
-A5 : 
+Q5 : 
 select trim(lower(product_name)) as product_name,
 date_format(sale_date,'%Y-%m') as sale_date,
 count(*) as total
@@ -44,7 +44,7 @@ from sales
 group by 1,2
 order by 1, 2 ;
 
-A6  : 
+Q6  : 
 select 
 user_id, sum(number_of_comments) as comments_count
 from fb_comments 
@@ -53,14 +53,14 @@ group by user_id
 having comments_count > 0
 order by 1;
 
-A7 : 
+Q7 : 
 SELECT DISTINCT emp.employee_id, emp.first_name, emp.last_name, emp.salary, department_name, 
 DATEDIFF('2022-06-08', emp.hire_date)/365 'Experience'
 FROM employees emp JOIN employees mng ON emp.employee_id = mng.manager_id JOIN departments dep ON dep.department_id = emp.department_id
 WHERE DATEDIFF('2022-06-08', emp.hire_date)/365 > 25
 ORDER BY emp.employee_id;
 
-A8 : 
+Q8 : 
 SELECT employee_id, first_name, last_name, salary, hire_date, department_id
 FROM (
     SELECT employee_id, first_name, last_name, salary, hire_date, department_id, 
@@ -71,6 +71,16 @@ WHERE Salary_rank = 1
 ORDER BY 6,1;
 
 AQ1:
+select 
+extract(YEAR from hire_date) as Year,
+count(*) as Employees_count
+from employees E 
+left join jobs j on E.job_id = J.job_id
+where J.job_id is not null
+GROUP by 1
+order by 2 Desc, 1;
+#This query address the part that Employee is current employee
+
 SELECT year(hire_date) 'Year', count(employee_id) 'Employees_count'
 FROM employees
 GROUP BY Year
