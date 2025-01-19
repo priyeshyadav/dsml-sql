@@ -176,14 +176,19 @@ where rnk_sales = 3
 on tb12.customerNumber = tbl3.customerNumber
 order by 1, 4 desc;
 
-SELECT o.customerNumber, o.orderNumber, od.productCode,
-(od.quantityOrdered * od.priceEach) as sales, 
-NTH_VALUE(od.quantityOrdered * od.priceEach, 3) 
-OVER(PARTITION BY o.customerNumber ORDER BY (od.quantityOrdered * od.priceEach) DESC 
-RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) as thirdHighestSales
-FROM orders o
-JOIN orderdetails od 
-ON o.orderNumber = od.orderNumber 
-ORDER BY o.customerNumber, sales DESC;
+Select O.customerNumber, O.orderNumber, OD.productCode, (OD.quantityOrdered * OD.priceEach) as sales,
+NTH_VALUE((OD.quantityOrdered * OD.priceEach),3) over(partition by O.customerNumber order by (OD.quantityOrdered * OD.priceEach) desc
+rows between unbounded preceding and unbounded following ) as thirdHighestSales
+from orders O 
+join orderdetails OD on O.orderNumber = OD.orderNumber
+order by 1 , 4 DESC;
+#If we dont use 'rows between unbounded preceding and unbounded follwing' than first two have null values in thirdHIghestSales as
+# default is rows between unbounded preciding and current row_number
+# the first two rows dont have 3 rows to compare and identify value
 
 AQ4 : 
+select productline, productname, MSRP,
+NTH_VALUE(productname, 3) over(partition by productline order by MSRP DESC ) as thirdMostExpensive_Product,
+NTH_VALUE(productname, 5) over(partition by productline order by MSRP DESC ) as fifthMostExpensive_Product
+from products
+order by 1, 3 desc;
